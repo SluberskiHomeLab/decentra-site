@@ -14,6 +14,8 @@ This site is designed to be deployed directly to Cloudflare Pages with zero conf
    - Build output directory: `/` (root directory)
 3. **Deploy**: Click deploy and your site will be live!
 
+> **Note**: This repository includes a `wrangler.toml` configuration file that ensures proper deployment. If you encounter issues, make sure the build command in Cloudflare Pages settings is left empty.
+
 ### Manual Testing Locally:
 
 To test the site locally before deployment:
@@ -30,6 +32,17 @@ php -S localhost:8080
 ```
 
 Then open `http://localhost:8080` in your browser.
+
+### Troubleshooting Deployment
+
+If you encounter a build error mentioning `wranger` (note the typo), this means the build command in Cloudflare Pages dashboard was incorrectly configured. To fix:
+
+1. Go to your Cloudflare Pages project settings
+2. Navigate to **Builds & deployments** → **Build configuration**
+3. Ensure the **Build command** field is **empty** (this is a static site with no build step)
+4. Save changes and retry deployment
+
+The `wrangler.toml` file in this repository should prevent this issue for new deployments.
 
 ## Features
 
