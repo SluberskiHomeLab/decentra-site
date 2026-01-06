@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Decentra - A decentralized, Discord-like chat server and client that is non-federated and self-hostable">
+    <title>Decentra - Self-Hosted Chat Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #5865F2;
+            --secondary-color: #7289da;
+            --dark-bg: #2C2F33;
+            --darker-bg: #23272A;
+            --light-bg: #36393F;
+            --text-light: #FFFFFF;
+            --text-muted: #B9BBBE;
+            --accent: #43B581;
+            --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        /* Header */
+        header {
+            background: var(--gradient);
+            color: var(--text-light);
+            padding: 4rem 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        header p {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.95;
+        }
+
+        /* Navigation */
+        nav {
+            background: var(--darker-bg);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            font-size: 1.1rem;
+        }
+
+        nav a:hover {
+            color: var(--text-light);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        /* Sections */
+        section {
+            background: white;
+            margin-bottom: 3rem;
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        section h2 {
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--darker-bg);
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 0.5rem;
+        }
+
+        section h3 {
+            font-size: 1.6rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: var(--dark-bg);
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            background: var(--light-bg);
+            color: var(--text-light);
+            padding: 2rem;
+            border-radius: 8px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature-card h3 {
+            font-size: 1.4rem;
+            margin-top: 0;
+            margin-bottom: 1rem;
+            color: var(--text-light);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Code blocks */
+        pre {
+            background: var(--darker-bg);
+            color: var(--text-light);
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95rem;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin-left: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            background: var(--primary-color);
+            color: var(--text-light);
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .btn:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(88, 101, 242, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--accent);
+        }
+
+        .btn-secondary:hover {
+            background: #3ca374;
+        }
+
+        .cta-buttons {
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--darker-bg);
+            color: var(--text-muted);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+
+        footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Architecture Grid */
+        .architecture-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .architecture-card {
+            background: #f9f9f9;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .architecture-card h4 {
+            color: var(--darker-bg);
+            margin-bottom: 1rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            header p {
+                font-size: 1rem;
+            }
+
+            section {
+                padding: 2rem 1.5rem;
+            }
+
+            section h2 {
+                font-size: 1.8rem;
+            }
+
+            nav ul {
+                gap: 1rem;
+            }
+
+            .features-grid,
+            .architecture-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Highlight boxes */
+        .highlight-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196F3;
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .highlight-box strong {
+            color: #1976D2;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🚀 Decentra</h1>
+        <p>A decentralized, Discord-like chat server and client that is non-federated and self-hostable</p>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#quick-start">Quick Start</a></li>
+            <li><a href="#architecture">Architecture</a></li>
+            <li><a href="#usage">Usage</a></li>
+            <li><a href="https://github.com/SluberskiHomeLab/decentra" target="_blank" rel="noopener noreferrer" aria-label="View Decentra on GitHub (opens in new tab)">GitHub</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <section id="overview">
+            <h2>Overview</h2>
+            <p>Decentra is a powerful, self-hosted alternative to Discord. Built with Python and WebSockets, it offers real-time messaging, voice chat, and persistent data storage using PostgreSQL. Perfect for individuals and communities who want complete control over their chat infrastructure.</p>
+            
+            <div class="cta-buttons">
+                <a href="https://github.com/SluberskiHomeLab/decentra" class="btn" target="_blank" rel="noopener noreferrer" aria-label="View Decentra on GitHub (opens in new tab)">View on GitHub</a>
+                <a href="#quick-start" class="btn btn-secondary">Get Started</a>
+            </div>
+        </section>
+
+        <section id="features">
+            <h2>✨ Features</h2>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">💬</div>
+                    <h3>Real-Time Messaging</h3>
+                    <p>WebSocket-based instant messaging with complete message history stored in PostgreSQL.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🖥️</div>
+                    <h3>Servers & Channels</h3>
+                    <p>Create multiple servers with text and voice channels. Granular permissions for channel management.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">👥</div>
+                    <h3>Friend System</h3>
+                    <p>Search for users, add friends, and enjoy private direct messaging conversations.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🎤</div>
+                    <h3>Voice Chat</h3>
+                    <p>Direct voice calls and voice channels using peer-to-peer WebRTC connections.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">💾</div>
+                    <h3>Persistent Storage</h3>
+                    <p>All data stored in PostgreSQL - users, messages, servers persist across restarts.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🔐</div>
+                    <h3>Secure Authentication</h3>
+                    <p>Username/password authentication with invite code system for controlled access.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🐳</div>
+                    <h3>Docker Ready</h3>
+                    <p>Fully containerized with Docker and Docker Compose for easy deployment.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🌐</div>
+                    <h3>Modern Web UI</h3>
+                    <p>Beautiful, responsive Discord-like interface accessible from any browser.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📧</div>
+                    <h3>Email Notifications</h3>
+                    <p>SMTP support for system emails with configurable settings in admin panel.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🔌</div>
+                    <h3>REST API</h3>
+                    <p>HTTP REST API available for desktop app integration and automation.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="quick-start">
+            <h2>🚀 Quick Start</h2>
+            
+            <div class="highlight-box">
+                <strong>Prerequisites:</strong> Docker and Docker Compose installed on your system.
+            </div>
+
+            <h3>Step 1: Clone the Repository</h3>
+            <pre><code>git clone https://github.com/SluberskiHomeLab/decentra.git
+cd decentra</code></pre>
+
+            <h3>Step 2: Configure Environment</h3>
+            <pre><code>cp .env.example .env</code></pre>
+            <p>Edit <code>.env</code> and update the database credentials:</p>
+            <pre><code># PostgreSQL Database Configuration
+POSTGRES_DB=decentra
+POSTGRES_USER=decentra
+POSTGRES_PASSWORD=your_secure_password_here
+
+# Server Configuration
+DATABASE_URL=postgresql://decentra:your_secure_password_here@postgres:5432/decentra</code></pre>
+
+            <h3>Step 3: Start the Server</h3>
+            <pre><code>docker-compose up --build</code></pre>
+
+            <h3>Step 4: Access the Application</h3>
+            <p>Open your web browser and navigate to:</p>
+            <pre><code>http://localhost:8765</code></pre>
+
+            <p>Create an account or log in to start chatting! The first user can sign up without an invite code.</p>
+
+            <h3>Managing Data</h3>
+            <p><strong>Stop the server (data persists):</strong></p>
+            <pre><code>docker-compose down</code></pre>
+
+            <p><strong>Remove all data and start fresh:</strong></p>
+            <pre><code>docker-compose down -v</code></pre>
+
+            <div class="highlight-box">
+                <strong>Note:</strong> Your data is stored in a PostgreSQL database in the Docker volume named <code>decentra-data</code> and will persist across container restarts.
+            </div>
+        </section>
+
+        <section id="architecture">
+            <h2>🏗️ Architecture</h2>
+
+            <div class="architecture-grid">
+                <div class="architecture-card">
+                    <h4>Server Layer</h4>
+                    <ul>
+                        <li><strong>server.py:</strong> Combined HTTP and WebSocket server</li>
+                        <li><strong>database.py:</strong> PostgreSQL data layer</li>
+                        <li><strong>api.py:</strong> REST API endpoints</li>
+                        <li>Handles authentication, messaging, and real-time communication</li>
+                    </ul>
+                </div>
+
+                <div class="architecture-card">
+                    <h4>Database</h4>
+                    <ul>
+                        <li><strong>PostgreSQL 16:</strong> Production-ready relational database</li>
+                        <li>Stores users, servers, channels, messages, and friendships</li>
+                        <li>Docker volume for data persistence</li>
+                        <li>Automatic schema initialization</li>
+                    </ul>
+                </div>
+
+                <div class="architecture-card">
+                    <h4>Web Client</h4>
+                    <ul>
+                        <li><strong>index.html:</strong> Login and signup page</li>
+                        <li><strong>chat.html:</strong> Main chat interface</li>
+                        <li><strong>voice.js:</strong> WebRTC voice implementation</li>
+                        <li>Discord-like responsive UI design</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Technology Stack</h3>
+            <ul>
+                <li><strong>Backend:</strong> Python with WebSockets and aiohttp</li>
+                <li><strong>Database:</strong> PostgreSQL 16 (via psycopg2-binary)</li>
+                <li><strong>Voice:</strong> WebRTC for peer-to-peer audio</li>
+                <li><strong>Security:</strong> bcrypt for password hashing</li>
+                <li><strong>Deployment:</strong> Docker and Docker Compose</li>
+            </ul>
+        </section>
+
+        <section id="usage">
+            <h2>📖 Usage Guide</h2>
+
+            <h3>Creating Servers</h3>
+            <p>Click the <strong>+ button</strong> in the left sidebar to create a new server. Each server automatically gets a "general" channel. Server owners can:</p>
+            <ul>
+                <li>Rename the server</li>
+                <li>Generate invite codes</li>
+                <li>Manage user permissions (create/edit/delete channels)</li>
+            </ul>
+
+            <h3>Managing Friends</h3>
+            <ol>
+                <li>Click the <strong>Friends</strong> button in the header</li>
+                <li>Click <strong>Search Users</strong> to find other users</li>
+                <li>Click <strong>Add Friend</strong> to connect instantly</li>
+                <li>Start private conversations via DMs</li>
+            </ol>
+
+            <h3>Voice Chat</h3>
+            <p><strong>Direct Calls:</strong> Click the 📞 button next to a friend's name to start a voice call.</p>
+            <p><strong>Voice Channels:</strong> Users with permissions can create voice channels in servers. Click on a voice channel (🔊 icon) to join.</p>
+            <ul>
+                <li>Use the mute button (🎤) to control your microphone</li>
+                <li>See how many users are in each voice channel</li>
+                <li>Click "Leave Voice" to disconnect</li>
+            </ul>
+
+            <h3>Permissions System</h3>
+            <p>Server owners can manage granular permissions for each member:</p>
+            <ul>
+                <li><strong>Create Channel:</strong> Allow creating new text/voice channels</li>
+                <li><strong>Edit Channel:</strong> Allow modifying channel settings</li>
+                <li><strong>Delete Channel:</strong> Allow removing channels</li>
+            </ul>
+        </section>
+
+        <section id="related-projects">
+            <h2>🔗 Related Projects</h2>
+            
+            <h3>Native Clients</h3>
+            <ul>
+                <li><strong><a href="https://github.com/SluberskiHomeLab/decentra-android" target="_blank" rel="noopener noreferrer" aria-label="Decentra Android on GitHub (opens in new tab)">Decentra Android</a></strong> - Native Android application for mobile devices</li>
+                <li><strong><a href="https://github.com/SluberskiHomeLab/decentra-win" target="_blank" rel="noopener noreferrer" aria-label="Decentra Windows on GitHub (opens in new tab)">Decentra Windows</a></strong> - Native Windows desktop client built with C# and WPF</li>
+            </ul>
+
+            <h3>Community & Support</h3>
+            <p>For issues, feature requests, or contributions, visit the <a href="https://github.com/SluberskiHomeLab/decentra" target="_blank" rel="noopener noreferrer" aria-label="Main Decentra repository on GitHub (opens in new tab)">main repository on GitHub</a>.</p>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Decentra - Self-Hosted Chat Platform | <a href="https://github.com/SluberskiHomeLab" target="_blank" rel="noopener noreferrer" aria-label="SluberskiHomeLab on GitHub (opens in new tab)">SluberskiHomeLab</a></p>
+        <p>Open source and available under the project's license</p>
+    </footer>
+</body>
+</html>
